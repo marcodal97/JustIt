@@ -3,11 +3,15 @@ import socket
 import time
 import json
 
+def login(client_socket):
+        credenziali = client_socket.recv(1234)
+        print(json.loads(credenziali.decode("utf-8")))
+        
+
 def client_thread(client_socket, address):
         print(f"Connessione da {address} accettata")
         client_socket.send(bytes("Connessione riuscita", "utf-8"))
-        credenziali = client_socket.recv(1234)
-        print(json.loads(credenziali.decode("utf-8")))
+        login(client_socket)
         
 
 server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
