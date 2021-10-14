@@ -33,7 +33,24 @@ def checklogin(username, password):
 def provametodo():
     return jsonify("provaAPI")
 
-@app.route('/searchUtente',methods=["GET"]) 
+@app.route('/insertClient', methods=["POST"])
+def inserisciCliente():
+    return jsonify(isError= False,
+                    message= "Success",
+                    statusCode= 200,
+                    ), 200
+
+@app.route('/searchUsername', methods=["GET"])
+def controlloUsername():
+    jsonResult = []
+
+    jsonResult.append({
+        'Username':"ciao",
+        'Password': "ciao"
+    })
+    return jsonify(jsonResult)
+
+@app.route('/searchUtente',methods=["GET"])
 def login():
     username = request.args.get('username')
     password = request.args.get('password')
@@ -43,9 +60,15 @@ def login():
     #inserire sessione poi 
 
     if res == 'ok':
-        return jsonify(isError= False,
-                    message= "Success",
-                    statusCode= 200,)
+
+        jsonResult = []
+
+        jsonResult.append({
+            'Username':"ciao",
+            'Password': "ciao"
+        })
+
+        return jsonify(jsonResult)
         print("login effettuato")
     else:
         return jsonify(isError= True,
@@ -53,6 +76,5 @@ def login():
                     statusCode= 404,)
         print("errore login")
     
-
 if __name__ == '__main__':
     app.run(debug=True, threaded=True, host='0.0.0.0')
