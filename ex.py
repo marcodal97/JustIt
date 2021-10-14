@@ -33,7 +33,7 @@ def checklogin(username, password):
 def provametodo():
     return jsonify("provaAPI")
 
-@app.route('/login',methods=["GET"])
+@app.route('/searchUtente',methods=["GET"]) 
 def login():
     username = request.args.get('username')
     password = request.args.get('password')
