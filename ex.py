@@ -22,6 +22,12 @@ app = Flask(__name__)
 
 #api = Api(app)
 
+
+DB_NAME = 'db'
+userDB = 'root'
+pswUserDB = '123456'
+hostDB = 'localhost'
+
 def connectToDb():
     cnx = mysql.connector.connect(user = userDB, password = pswUserDB, host = hostDB)
     mySQLcursor = cnx.cursor()
@@ -94,6 +100,25 @@ def login():
                     message= "Failed",
                     statusCode= 404,)
         print("errore login")
+        
+        
+        
+        
+        
+ @app.route('/visualizzautenti', methods=["GET"])
+ def visualizaOrdini():
+    cnx = connectToDb()
+    cursor = cnx.cursor()
+    cursor.execute("select * from utente")
+    res = cursor.fetchall()
+    for row in res:
+        print("utente: {} - password: {} - tipo: {}".format(row[0],row[1],row[2]))
+    return jsonify(isError= False,
+                    message= "Success",
+                    statusCode= 200,
+                    )
+
+
     
 if __name__ == '__main__':
     app.run(debug=True, threaded=True, host='0.0.0.0')
