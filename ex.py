@@ -1,9 +1,9 @@
 from flask import Flask
-#from flask import request
-#from flask_restful import Resource, Api
-import json
-from flask import jsonify
 from flask import request
+from flask import jsonify
+import json
+import mysql.connector
+from mysql.connector import errorcode
 
 
 
@@ -22,6 +22,17 @@ app = Flask(__name__)
 
 #api = Api(app)
 
+def connectToDb():
+    cnx = mysql.connector.connect(user = userDB, password = pswUserDB, host = hostDB)
+    mySQLcursor = cnx.cursor()
+    try:
+        mySQLcursor.execute("use {};".format(DB_NAME))
+    except mysql.connector.Error as err:
+        print("Il database non esiste, bisogna crearlo!")
+        if err.errno == errorcode.ER_BAD_DB_ERROR:
+            mySQLcursor.execute("use {};".format(DB_NAME))
+    return cnx
+
 def checklogin(username, password):
     if username == "user" and password == 'pass':
         return 'ok'
@@ -35,6 +46,14 @@ def provametodo():
 
 @app.route('/insertClient', methods=["POST"])
 def inserisciCliente():
+    cnx = connectToDb()
+    data = request.json
+
+    username = data.get("Username");
+
+    cnx.cursor().execute("insert into utente(username,password,tipo) values('{}','{}',0);".format(username, data.get("Password")))
+    cnx.cursor().execute("insert into cliente(username,nome,cognome,indirizzo) values('{}','{}','{}','{}');".format(username, data.get("Nome"), data.get("Cognome"), data.get("Indirizzo")))
+    cnx.commit()
     return jsonify(isError= False,
                     message= "Success",
                     statusCode= 200,
