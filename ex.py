@@ -44,11 +44,39 @@ def checklogin(username, password):
         return 'ok'
     else:
         return 'error'
-
+    
+def checkUsername(username):
+   cnx = connectToDb()
+   cursor = cnx.cursor()
+   query = "select * from utente where username='{}'".format(username)
+   cursor.execute(query)
+   res = cursor.fetchall()
+   jsonResult = []
+   for row in res:
+       jsonResult.append({
+            'Username':row[0],
+            'Password':row[1]
+            })
+   return jsonResult
 
 @app.route('/registrazione',methods=["GET"])
 def provametodo():
     return jsonify("provaAPI")
+
+@app.route('/insertRistorante', methods=["POST"])
+def inserisciRistorante():
+    cnx = connectToDb()
+    data = request.json
+
+    username = data.get("Username")
+
+    cnx.cursor().execute("insert into utente(username,password,tipo) values('{}','{}',1);".format(username, data.get("Password")))
+    cnx.cursor().execute("insert into ristorante(username,nome,categoria,indirizzo,aperto) values('{}','{}','{}','{}',0);".format(username, data.get("Nome"), data.get("Categoria"), data.get("Indirizzo")))
+    cnx.commit()
+    return jsonify(isError= False,
+                    message= "Success",
+                    statusCode= 200,
+                    ), 200
 
 @app.route('/insertClient', methods=["POST"])
 def inserisciCliente():
@@ -67,44 +95,25 @@ def inserisciCliente():
 
 @app.route('/searchUsername', methods=["GET"])
 def controlloUsername():
-    jsonResult = []
+    
+    username = request.args.get('username')
 
-    jsonResult.append({
-        'Username':"ciao",
-        'Password': "ciao"
-    })
+    jsonResult = checkUsername(username)
+
     return jsonify(jsonResult)
 
 @app.route('/searchUtente',methods=["GET"])
 def login():
+    
     username = request.args.get('username')
     password = request.args.get('password')
 
-    res = checklogin(username,password)
+    jsonResult = checklogin(username,password)
 
     #inserire sessione poi 
 
-    if res == 'ok':
-
-        jsonResult = []
-
-        jsonResult.append({
-            'Username':"ciao",
-            'Password': "ciao"
-        })
-
-        return jsonify(jsonResult)
-        print("login effettuato")
-    else:
-        return jsonify(isError= True,
-                    message= "Failed",
-                    statusCode= 404,)
-        print("errore login")
-        
-        
-        
-        
-        
+    return jsonify(jsonResult)
+         
  @app.route('/visualizzautenti', methods=["GET"])
  def visualizaOrdini():
     cnx = connectToDb()
