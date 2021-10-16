@@ -14,6 +14,8 @@ userDB = 'root'
 pswUserDB = '123456'
 hostDB = '127.0.0.1'
 
+session = []
+
 #api = Api(app)
 
 def connectToDb():
@@ -166,7 +168,7 @@ def login():
     try:
         cursor.execute(query)
         res = cursor.fetchall()
-    except:                             #Se c'è un errore di database isError = True altrimenti è False. 
+    except mysql.connector.Error:       #Se c'è un errore di database isError = True altrimenti è False. 
         return jsonify(isError= True,   #Se i dati sono errati il messaggio che invia al client è "Errati". Altrimenti invia il tipo dell'utente che si è loggato
                     message= "Errore",
                     statusCode= 400,
@@ -177,6 +179,13 @@ def login():
                     statusCode= 200,
                     )
     else:
+        if username in session:
+            return jsonify(isError= False,  
+                    message= "Già loggato",
+                    statusCode= 200,
+                    )
+        session.append(username)
+        print(session)
         for row in res:
             return jsonify(isError= False,  
                         message= row[2],
@@ -184,16 +193,24 @@ def login():
                         )
 
 
-
-
-
-
+@app.route('/logout', methods=["GET"])  
+def logout():
+    username = request.args.get('username')
+    if session:
+        if username in session:
+            session.remove(username)
+            return jsonify(isError=False,
+                            message= "Success",
+                            statusCode=200,
+                            )
+    else: return jsonify(isError= True,
+                    message= "Errore",
+                    statusCode= 400,
+                    )
     
 @app.route('/visualizzaRistoranti', methods=["GET"])
 def visualizzaRistoranti():
-
     jsonResult = selectAllRestaurant()
-
     return jsonify(jsonResult)
 
 @app.route('/openCloseRistorante', methods=["PUT"])
@@ -201,9 +218,15 @@ def openRistorante():
     cnx = connectToDb()
     data = request.json
     cursor = cnx.cursor()
-    query = "update ristorante set aperto={} where username='{}'".format(data.get('aperto'), data.get('username'))
-    cursor.execute(query)
-    cnx.commit()
+    try:
+        query = "update ristorante set aperto={} where username='{}'".format(data.get('aperto'), data.get('username'))
+        cursor.execute(query)
+        cnx.commit()
+    except mysql.connector.Error:
+        return jsonify(isError= True,
+                    message= "Errore richiesta",
+                    statusCode= 400,
+                    )
     return jsonify(isError= False,
                     message= "Success",
                     statusCode= 200,
