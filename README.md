@@ -21,21 +21,34 @@ RISTORANTE: (Username, Nome_Ristorante, Categoria, Indirizzo_Ristorante, Aperto)
   Login, registrazione e logout per entrambi. (FATTO, MANCA IL LOGOUT PER IL CLIENTE)
   
   1. Home clienti
+  
     a.  Visualizzare ristoranti aperti/chiusi (FATTO)
+    
     b.  Visualizzazione mediante ricerca dei ristoranti aperti/chiusi (?)
+    
     c.  Visualizzazione menu del ristorante scelto
+    
     d.  Scelta pietanze relative ai vari menu o scelta di soli menu fissi (?) forse conviene di più
+    
     e.  Attendere notifica di avvenuta conferma
+   
     f.  Attendere notifica di avvenuta consegna
+    
     g. Compilazione questionario per il client (R)
     
  
  2. Home Ristorante
+ 
     a. Bottone per apertura/chiusura ristorante (FATTO)
+    
     b. Inserire menu (con relative pietanze)
+    
     c. Attendere arrivo ordini
+    
     d. Conferma dell'ordine
+    
     f. Conferma della consegna
+    
     
 
     
