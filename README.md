@@ -19,7 +19,7 @@ RISTORANTE: (Username, Nome_Ristorante, Categoria, Indirizzo_Ristorante, Aperto)
 # Ipotetiche funzionalità da implementare
 
   Login (FATTO), registrazione (FATTO)
-  logout (FATTO - manca soltanto da inserire nel client per il cliente)
+  logout (FATTO)
   
   1. Home clienti
   
