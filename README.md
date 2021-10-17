@@ -40,15 +40,15 @@ RISTORANTE: (Username, Nome_Ristorante, Categoria, Indirizzo_Ristorante, Aperto)
  
  2. Home Ristorante
  
-    a. Bottone per apertura/chiusura ristorante (FATTO)
-    
-    b. Inserire menu (con relative pietanze)
-    
-    c. Attendere arrivo ordini
-    
-    d. Conferma dell'ordine
-    
-    f. Conferma della consegna
+      a. Bottone per apertura/chiusura ristorante (FATTO)
+
+      b. Inserire menu (con relative pietanze)
+
+      c. Attendere arrivo ordini
+
+      d. Conferma dell'ordine
+
+      f. Conferma della consegna
     
     
 
