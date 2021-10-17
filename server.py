@@ -219,14 +219,16 @@ def logout():
     if session:
         if username in session:
             session.remove(username)
-            return jsonify(isError=False,
-                            message= "Success",
-                            statusCode=200,
-                            )
-    else: return jsonify(isError= True,
-                    message= "Errore",
-                    statusCode= 400,
-                    )
+            return jsonify(createResult(False, "Success", 200))
+            #return jsonify(isError=False,
+             #               message= "Success",
+              #              statusCode=200,
+               #             )
+    else: return jsonify(True, "Error", 400); 
+        #return jsonify(isError= True,
+         #           message= "Errore",
+          #          statusCode= 400,
+           #         )
     
 @app.route('/visualizzaRistoranti', methods=["GET"])
 def visualizzaRistoranti():
