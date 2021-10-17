@@ -9,7 +9,7 @@ from mysql.connector import errorcode
 
 app = Flask(__name__)
 
-DB_NAME = 'db'
+DB_NAME = 'justIt'
 userDB = 'root'
 pswUserDB = '123456'
 hostDB = '127.0.0.1'
@@ -82,6 +82,23 @@ def selectAllRestaurant():
            })
    return jsonResult
 
+def createResult(isError, message, statusCode):
+    jsonResult = []
+
+    if message == '0':
+        messageSend = 'Client'
+    elif message == '1' :
+        messageSend = 'Restaurant'
+    else:
+        messageSend = message
+    
+    jsonResult.append({
+            'IsError' : isError,
+            'Message' : messageSend,
+            'StatusCode' : statusCode
+        })
+    return jsonResult
+
 @app.route('/insertRistorante', methods=["POST"])
 def inserisciRistorante():
     cnx = connectToDb()
@@ -122,13 +139,9 @@ def inserisciCliente():
 '''
 @app.route('/searchUsername', methods=["GET"])
 def controlloUsername():
-
     username = request.args.get('username')
-
     jsonResult = checkUsername(username)
-
     return jsonify(jsonResult)
-
 '''
 
 @app.route('/verificaUsername', methods=["GET"]) #per la registrazione
@@ -140,20 +153,23 @@ def verificaUsername():
         cursor.execute("select * from utente where username = '{}'".format(username))  #evita che un errore nella richiesta al database mi faccia bloccare il server
         res = cursor.fetchall()
     except mysql.connector.Error:
-        return jsonify(isError= True,
-                    message= "Errore",
-                    statusCode= 400,
-                    )
+        return jsonify(createResult(True, "Errore di connessione al database", 400))
+        #return jsonify(isError= True,
+         #           message= "Errore",
+          #          statusCode= 400,
+           #         )
     if not res:
-        return jsonify(isError= False,  
-                    message= "Non Presente",
-                    statusCode= 200,
-                    )
+        return jsonify(createResult(False, "Non Presente", 200))
+        #return jsonify(isError= False,  
+         #           message= "Non Presente",
+          #          statusCode= 200,
+           #         )
     else: 
-            return jsonify(isError= False,
-                    message= "Presente",
-                    statusCode= 200,
-                    )
+        return jsonify(createResult(False, "Presente", 200))
+            #return jsonify(isError= False,
+             #       message= "Presente",
+              #      statusCode= 200,
+               #     )
 
 
 @app.route('/login',methods=["GET"])
@@ -169,28 +185,32 @@ def login():
         cursor.execute(query)
         res = cursor.fetchall()
     except mysql.connector.Error:       #Se c'è un errore di database isError = True altrimenti è False. 
-        return jsonify(isError= True,   #Se i dati sono errati il messaggio che invia al client è "Errati". Altrimenti invia il tipo dell'utente che si è loggato
-                    message= "Errore",
-                    statusCode= 400,
-                    )
+        #return jsonify(isError= True,   #Se i dati sono errati il messaggio che invia al client è "Errati". Altrimenti invia il tipo dell'utente che si è loggato
+        #            message= "Errore",
+        #           statusCode= 400,
+        #           )
+        return jsonify(createResult(True, "Errore", 400))
     if not res:
-        return jsonify(isError= False,  
-                    message= "Errati",
-                    statusCode= 200,
-                    )
+        return jsonify(createResult(False, "Errati", 200))
+        #return jsonify(isError= False,  
+         #           message= "Errati",
+          #          statusCode= 200,
+           #         )
     else:
         if username in session:
-            return jsonify(isError= False,  
-                    message= "Già loggato",
-                    statusCode= 200,
-                    )
+            return jsonify(createResult(False, "Già loggato", 200))
+            #return jsonify(isError= False,  
+             #       message= "Già loggato",
+              #      statusCode= 200,
+               #     )
         session.append(username)
         print(session)
         for row in res:
-            return jsonify(isError= False,  
-                        message= row[2],
-                        statusCode= 200,
-                        )
+            return jsonify(createResult(False, str(row[2]), 200))
+            #return jsonify(isError= False,  
+              #          message= row[2],
+               #         statusCode= 200,
+                #        )
 
 
 @app.route('/logout', methods=["GET"])  
