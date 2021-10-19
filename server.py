@@ -9,7 +9,8 @@ from mysql.connector import errorcode
 
 app = Flask(__name__)
 
-DB_NAME = 'justIt'
+#DB_NAME = 'justIt'
+DB_NAME = 'db'
 userDB = 'root'
 pswUserDB = '123456'
 hostDB = '127.0.0.1'
@@ -254,7 +255,119 @@ def openRistorante():
                     statusCode= 200,
                     )
 
+@app.route('/menu', methods=['POST', 'GET', 'DELETE'])
+def menu():
+    cnx = connectToDb()
+    cursor = cnx.cursor()
+    match request.method:
+        case 'POST':
+            data = request.json
+            try:
+                query = "insert into menu(username_ristorante, categoria) values ('{}','{}')".format(data.get('username_ristorante'), data.get('categoria'))
+                cursor.execute(query)
+                cnx.commit()
+            except mysql.connector.Error:
+                return jsonify(isError= True,
+                    message= "Errore richiesta",
+                    statusCode= 400,
+                    )
+            return jsonify(isError= False,
+                            message= "Success",
+                            statusCode= 200,
+                            )
+        case 'GET':
+            user = request.args.get('username_ristorante')
+            try:
+                cursor.execute("select * from menu where username_ristorante = '{}'".format(user)) 
+                res = cursor.fetchall()
+            except mysql.connector.Error:
+                    return jsonify(isError= True,
+                        message= "Errore richiesta",
+                        statusCode= 400,
+                        )
+            jsonResult = []
+            for row in res:
+                jsonResult.append({
+                    'id': row[0],
+                    'username_ristorante': row[1],
+                    'categoria': row[2]
+                    })
+            return jsonify(jsonResult)
 
+        case 'DELETE':
+            id = request.args.get('id_menu')
+            try:
+                cursor.execute("delete from menu where id = {}".format(id)) 
+                cnx.commit()
+            except mysql.connector.Error:
+                    return jsonify(isError= True,
+                        message= "Errore richiesta",
+                        statusCode= 400,
+                        )
+            return jsonify(isError= False,
+                            message= "Success",
+                            statusCode= 200,
+                            )
+
+
+
+
+@app.route('/pietanza', methods=['POST', 'GET', 'DELETE'])
+def pietanza():
+    cnx = connectToDb()
+    cursor = cnx.cursor()
+    match request.method:
+        case 'POST':
+            data = request.json
+            try:
+                query = "insert into pietanza(id_menu,nome,descrizione,categoria,prezzo) values ('{}','{}','{}','{}',{})".format(data.get('id_menu'), data.get('nome'), data.get('descrizione'), data.get('categoria'),data.get('prezzo'))
+                cursor.execute(query)
+                cnx.commit()
+            except mysql.connector.Error:
+                return jsonify(isError= True,
+                    message= "Errore richiesta",
+                    statusCode= 400,
+                    )
+            return jsonify(isError= False,
+                            message= "Success",
+                            statusCode= 200,
+                            )
+        case 'GET':  #restituisce tutte le pietanze di un menu
+            menu = request.args.get('id_menu')
+            try:
+                cursor.execute("select * from pietanza where id_menu = '{}'".format(menu)) 
+                res = cursor.fetchall()
+            except mysql.connector.Error:
+                    return jsonify(isError= True,
+                        message= "Errore richiesta",
+                        statusCode= 400,
+                        )
+            jsonResult = []
+            for row in res:
+                jsonResult.append({
+                    'id': row[0],
+                    'id_menu': row[1],
+                    'nome': row[2],
+                    'descrizione': row[3],
+                    'categoria': row[4],
+                    'prezzo' : row[5]
+                    })
+            return jsonify(jsonResult)
+
+        case 'DELETE':
+            id = request.args.get('id_pietanza')
+            try:
+                cursor.execute("delete from pietanza where id = {}".format(id)) 
+                cnx.commit()
+            except mysql.connector.Error:
+                    return jsonify(isError= True,
+                        message= "Errore richiesta",
+                        statusCode= 400,
+                        )
+            return jsonify(isError= False,
+                            message= "Success",
+                            statusCode= 200,
+                            )
 
 
 
