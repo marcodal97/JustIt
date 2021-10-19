@@ -45,7 +45,7 @@ ORDINI-PIETANZA: (ID, ID_PIETANZA)
     
     b.  Visualizzazione mediante ricerca dei ristoranti aperti/chiusi (?) -- NO
     
-    c.  Visualizzazione menu del ristorante scelto (LATO SERVER FATTO)
+    c.  Visualizzazione menu del ristorante scelto 
     
     d.  Scelta pietanze relative ai vari menu o scelta di soli menu fissi (?) forse conviene di più
     
@@ -60,7 +60,7 @@ ORDINI-PIETANZA: (ID, ID_PIETANZA)
  
       a. Bottone per apertura/chiusura ristorante (FATTO)
 
-      b. Inserire menu (con relative pietanze) -- FORM  (LATO SERVER FATTO)
+      b. Inserire menu (con relative pietanze) -- FORM  
 
       c. Attendere arrivo ordini -- THREAD
 
@@ -71,6 +71,25 @@ ORDINI-PIETANZA: (ID, ID_PIETANZA)
       g. Visualizzione valutazioni (Visualizza statistiche)
     
     
+**********************************************
 
+
+  3. Server
+
+    a.  Menu
+       a.1  Visualizzazione menu del ristorante scelto (FATTO)
+       a.2  Inserimento nuovo menu (FATTO)
+       a.3  Restituzione informazioni base menu (FATTO)
+       a.4  Rimozione menu (FATTO)
     
-
+    b.  Pietanze           
+       b.1  Inserimento di pietanze in un menu (FATTO)
+       b.2  Restituzione pietanze di un menu (FATTO)
+       b.3  Rimozione di pietanze in un menu (FATTO)
+       
+    c.  Ordini
+       c.1  Inserimento ordine (FATTO)
+       c.2  Inserimento pietanze in un ordine (FATTO)
+       c.3  Restituzione informazioni base di un ordine (FATTO)
+       c.4  Restituzione pietanze di un ordine con dettagli (FATTO)
+       c.5  Aggiornamento e restituzione stato ordine (FATTO)
