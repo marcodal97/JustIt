@@ -269,14 +269,20 @@ def menu():
                 query = "insert into menu(username_ristorante, categoria) values ('{}','{}')".format(data.get('username_ristorante'), data.get('categoria'))
                 cursor.execute(query)
                 cnx.commit()
+                query = "select LAST_INSERT_ID();"
+                cursor.execute(query)
+                res = cursor.fetchall()
             except mysql.connector.Error:
                 return jsonify(isError= True,
                     message= "Errore richiesta",
                     statusCode= 400,
                     )
-            return jsonify(isError= False,
+            for row in res:
+                id = row[0]
+            return jsonify(isError= str(False),
                             message= "Success",
-                            statusCode= 200,
+                            statusCode= str(200),
+                            id_m = str(id)
                             )
         case 'GET': #Restituisce informazioni base di un menu
             user = request.args.get('username_ristorante')
