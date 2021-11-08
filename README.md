@@ -60,7 +60,7 @@ ORDINI-PIETANZA: (ID, ID_PIETANZA)
  
       a. Bottone per apertura/chiusura ristorante (FATTO)
 
-      b. Inserire menu (con relative pietanze) -- FORM  
+      b. Inserire, cancellare e visualizzare menu (con relative pietanze) -- FORM (FATTO)  
 
       c. Attendere arrivo ordini -- THREAD
 
