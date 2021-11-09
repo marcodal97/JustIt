@@ -8,8 +8,8 @@ from mysql.connector.connection import MySQLConnection
 
 app = Flask(__name__)
 
-#DB_NAME = 'justIt'
-DB_NAME = 'db'
+DB_NAME = 'justIt'
+#DB_NAME = 'db'
 userDB = 'root'
 pswUserDB = '123456'
 hostDB = '127.0.0.1'
@@ -304,7 +304,7 @@ def menu():
             return jsonify(jsonResult)
 
         case 'DELETE':  #cancellazione menu
-            id = request.args.get('id_menu')
+            id = request.args.get('delete_id')
             try:
                 cursor.execute("delete from menu where id = {}".format(id)) 
                 cnx.commit()
@@ -341,7 +341,8 @@ def pietanza():
         case 'GET':  #restituisce tutte le pietanze di un menu
             menu = request.args.get('id_menu')
             try:
-                cursor.execute("select * from pietanza where id_menu = '{}'".format(menu)) 
+                cursor.execute("select * from pietanza where id_menu = '{}'".format(menu))
+                #cursor.execute("select * from pietanza")
                 res = cursor.fetchall()
             except mysql.connector.Error:
                     return jsonify(isError= True,
@@ -361,7 +362,7 @@ def pietanza():
             return jsonify(jsonResult)
 
         case 'DELETE': #cancellazione pietanza
-            id = request.args.get('id_pietanza')
+            id = request.args.get('delete_id')
             try:
                 cursor.execute("delete from pietanza where id = {}".format(id)) 
                 cnx.commit()
