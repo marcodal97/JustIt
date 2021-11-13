@@ -49,9 +49,9 @@ ORDINI-PIETANZA: (ID, ID_PIETANZA)
     
     d.  Scelta pietanze relative ai vari menu o scelta di soli menu fissi (?) forse conviene di più (FATTO)
     
-    e.  Attendere notifica di avvenuta conferma -- THREAD
+    e.  Attendere notifica di avvenuta conferma -- THREAD (FATTO)
    
-    f.  Attendere notifica di avvenuta consegna -- THREAD
+    f.  Attendere notifica di avvenuta consegna -- THREAD (FATTO)
     
     g. Compilazione questionario per il client (R)
     
@@ -62,11 +62,11 @@ ORDINI-PIETANZA: (ID, ID_PIETANZA)
 
       b. Inserire, cancellare e visualizzare menu (con relative pietanze) -- FORM (FATTO)  
 
-      c. Attendere arrivo ordini -- THREAD
+      c. Attendere arrivo ordini -- THREAD (FATTO)
 
-      d. Conferma dell'ordine -- BOTTONE
+      d. Conferma dell'ordine -- BOTTONE (FATTO)
  
-      f. Conferma della consegna -- BOTTONE
+      f. Conferma della consegna -- BOTTONE (FATTO)
       
       g. Visualizzione valutazioni (Visualizza statistiche)
     
