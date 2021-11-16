@@ -6,6 +6,9 @@ import mysql.connector
 from mysql.connector import errorcode
 from mysql.connector.connection import MySQLConnection
 
+import subprocess #Utile per le statistiche di R
+import os.path
+
 app = Flask(__name__)
 
 #DB_NAME = 'justIt'
@@ -353,7 +356,6 @@ def pietanza():
                             statusCode= 200,
                             )
 
-
 @app.route('/ordine', methods=['POST', 'GET','PUT'])
 def ordine():
     cnx = connectToDb()
@@ -417,7 +419,8 @@ def ordine():
                             'id': str(row[0]),
                             'nome_ristorante': row[6],
                             'stato': row[3],
-                            'totale': str(row[4])                 
+                            'totale': str(row[4]),
+                            'compilato': str(row[10])                 
                             })
                     return jsonify(jsonResult)
 
@@ -454,7 +457,6 @@ def ordine():
                             message= "Success",
                             statusCode= 200,
                             )
-
 
 @app.route('/ordine_pietanza', methods=['GET','POST'])
 def ordinePietanza():
@@ -508,6 +510,79 @@ def ordinePietanza():
                     })
             return jsonify(jsonResult)
 
+@app.route('/questionario', methods=['POST', 'GET'])
+def questionario():
+    cnx = connectToDb()
+    cursor = cnx.cursor()
+    match request.method:
+        case 'POST':  #Inserimento questionario
+            data = request.json
+            try:
+                query = "insert into questionario(id_ordine,qualità_cibo,servizio_ristorante,tempo_consegna) values ({},{},{},{})".format(data.get('id_ordine'), data.get('qualità_cibo'), data.get('servizio_ristorante'), data.get('tempo_consegna'))
+                cursor.execute(query)
+                cnx.commit()
+            except mysql.connector.Error:
+                return jsonify(isError= True,
+                    message= "Errore richiesta",
+                    statusCode= 400,
+                    )
+            return jsonify(isError=False,
+                            message="Success",
+                            statusCode=200
+                            )
+        case 'GET':
+            mod = request.args.get('mod')
+            match mod:
+                case 'media_valutazioni':
+                    try:
+                        cursor.execute("select qualità_cibo, servizio_ristorante, tempo_consegna from questionario join ordine on questionario.id_ordine = ordine.id where username_ristorante ='{}' ".format(request.args.get("username_ristorante")))
+                        res = cursor.fetchall()
+                    except mysql.connector.Error:
+                            return jsonify(isError= True,
+                                message= "Errore richiesta",
+                                statusCode= 400,
+                                )
+                    jsonResult = []
+                    for row in res:
+                        jsonResult.append({
+                                  "qualità":row[0],
+                                  "servizio_ristorante":row[1],
+                                  "tempo_consegna":row[2]         
+                            })
+                    return jsonify(jsonResult)
+
+                case '': 
+                    try:
+                        cursor.execute() 
+                        res = cursor.fetchall()
+                    except mysql.connector.Error:
+                            return jsonify(isError= True,
+                                message= "Errore richiesta",
+                                statusCode= 400,
+                                )
+                    jsonResult = []
+                    for row in res:
+                        jsonResult.append({
+                                             
+                            })
+                    return jsonify(jsonResult)
+
+                case '': 
+                    try:
+                        cursor.execute()
+                        res = cursor.fetchall()
+                    except mysql.connector.Error as err:
+                            return jsonify(isError= True,
+                                message= "Errore richiesta",
+                                cod_err = err.msg,
+                                statusCode= 400,
+                                )
+                    jsonResult = []
+                    for row in res:
+                        jsonResult.append({
+                                          
+                            })
+                    return jsonify(jsonResult)   
 
 if __name__ == '__main__':
     app.run(debug=True, threaded=True, host='0.0.0.0')
