@@ -420,7 +420,7 @@ def ordine():
                             'nome_ristorante': row[6],
                             'stato': row[3],
                             'totale': str(row[4]),
-                            'compilato': str(row[10])                 
+                            'compilato': str(row[5])                 
                             })
                     return jsonify(jsonResult)
 
@@ -441,7 +441,9 @@ def ordine():
                             'username': str(row[2]),
                             'stato_ordine': str(row[3])                   
                             })
-                    return jsonify(jsonResult)   
+                    return jsonify(jsonResult)
+
+
         case 'PUT':
             data = request.json
             try:
@@ -520,10 +522,11 @@ def questionario():
             try:
                 query = "insert into questionario(id_ordine,qualità_cibo,servizio_ristorante,tempo_consegna) values ({},{},{},{})".format(data.get('id_ordine'), data.get('qualità_cibo'), data.get('servizio_ristorante'), data.get('tempo_consegna'))
                 cursor.execute(query)
-                cnx.commit()
-            except mysql.connector.Error:
+                cursor.execute("update ordine set compilato = 1 where id = {}".format(data.get("id_ordine")))
+                cnx.commit() 
+            except mysql.connector.Error as err:
                 return jsonify(isError= True,
-                    message= "Errore richiesta",
+                    message= err.msg,
                     statusCode= 400,
                     )
             return jsonify(isError=False,
