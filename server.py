@@ -19,6 +19,8 @@ hostDB = '127.0.0.1'
 
 session = []
 
+command = r'C:\Program Files\R\R-4.1.2\bin\Rscript'
+path = os.path.dirname(__file__)+"\Script_R\prova.R"
 #api = Api(app)
 
 def connectToDb():
@@ -545,12 +547,21 @@ def questionario():
                                 message= "Errore richiesta",
                                 statusCode= 400,
                                 )
-                    jsonResult = []
+                    qualita = []
+                    servizio = []
+                    tempo = []
                     for row in res:
-                        jsonResult.append({
-                                  "qualità":row[0],
-                                  "servizio_ristorante":row[1],
-                                  "tempo_consegna":row[2]         
+                        qualita.append(str(row[0]))
+                        servizio.append(str(row[1]))
+                        tempo.append(str(row[2]))
+                       
+                    cmd = [command, path] + qualita + servizio + tempo
+                    x = subprocess.check_output(cmd, universal_newlines=True)
+
+                    media = (x.split('"'))[1]
+                    jsonResult = []
+                    jsonResult.append({
+                                  "media": media[0:4]
                             })
                     return jsonify(jsonResult)
 
@@ -586,6 +597,6 @@ def questionario():
                                           
                             })
                     return jsonify(jsonResult)   
-
+    
 if __name__ == '__main__':
     app.run(debug=True, threaded=True, host='0.0.0.0')
