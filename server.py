@@ -25,6 +25,8 @@ path_media = os.path.dirname(__file__)+"\Script_R\media.R"
 path_stats1 = os.path.dirname(__file__)+"\Script_R\stats1.R"
 path_stats2 = os.path.dirname(__file__)+"\Script_R\stats2.R"
 path_stats3 = os.path.dirname(__file__)+"\Script_R\stats3.R"
+path_mediatemp = os.path.dirname(__file__)+"\Script_R\mediatemp.R"
+
 #api = Api(app)/
 
 def connectToDb():
@@ -571,16 +573,13 @@ def questionario():
                 case 'stats1': 
                     cmd = [command, path_stats1] + qualita + servizio + tempo
                     x = subprocess.check_output(cmd, universal_newlines=True)
-                    jsonResult = []
                     image=open(r".\stats1.jpg","rb")
                     response=send_file(image,as_attachment=True, download_name='myfile.jpg')
                     return response
-    
 
                 case 'stats2': 
                     cmd = [command, path_stats2] + qualita + servizio + tempo
                     x = subprocess.check_output(cmd, universal_newlines=True)
-                    jsonResult = []
                     image=open(r".\stats2.jpg","rb")
                     response=send_file(image,as_attachment=True, download_name='myfile.jpg')
                     return response
@@ -588,10 +587,18 @@ def questionario():
                 case 'stats3': 
                     cmd = [command, path_stats3] + qualita + servizio + tempo
                     x = subprocess.check_output(cmd, universal_newlines=True)
-                    jsonResult = []
                     image=open(r".\stats3.jpg","rb")
+                    response=send_file(image,as_attachment=True, download_name='myfile.jpg')
+                    return response
+
+                case 'mediatemp': 
+                    cmd = [command, path_mediatemp] + qualita + servizio + tempo
+                    x = subprocess.check_output(cmd, universal_newlines=True)
+                    print(x)
+                    image=open(".\mediatemp.jpg","rb")
                     response=send_file(image,as_attachment=True, download_name='myfile.jpg')
                     return response
     
 if __name__ == '__main__':
     app.run(debug=True, threaded=True, host='0.0.0.0')
+
