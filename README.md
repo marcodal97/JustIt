@@ -53,7 +53,7 @@ ORDINI-PIETANZA: (ID, ID_PIETANZA)
    
     f.  Attendere notifica di avvenuta consegna -- THREAD (FATTO)
     
-    g. Compilazione questionario per il client (R)
+    g. Compilazione questionario per il client (R) (FATTO)
     
  
  2. Home Ristorante
@@ -68,7 +68,7 @@ ORDINI-PIETANZA: (ID, ID_PIETANZA)
  
       f. Conferma della consegna -- BOTTONE (FATTO)
       
-      g. Visualizzione valutazioni (Visualizza statistiche)
+      g. Visualizzione valutazioni (Visualizza statistiche) (FATTO)
     
     
 **********************************************
