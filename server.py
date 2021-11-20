@@ -573,21 +573,21 @@ def questionario():
                 case 'stats1': 
                     cmd = [command, path_stats1] + qualita + servizio + tempo
                     x = subprocess.check_output(cmd, universal_newlines=True)
-                    image=open(r".\stats1.jpg","rb")
+                    image=open(".\stats1.jpg","rb")
                     response=send_file(image,as_attachment=True, download_name='myfile.jpg')
                     return response
 
                 case 'stats2': 
                     cmd = [command, path_stats2] + qualita + servizio + tempo
                     x = subprocess.check_output(cmd, universal_newlines=True)
-                    image=open(r".\stats2.jpg","rb")
+                    image=open(".\stats2.jpg","rb")
                     response=send_file(image,as_attachment=True, download_name='myfile.jpg')
                     return response
                 
                 case 'stats3': 
                     cmd = [command, path_stats3] + qualita + servizio + tempo
                     x = subprocess.check_output(cmd, universal_newlines=True)
-                    image=open(r".\stats3.jpg","rb")
+                    image=open(".\stats3.jpg","rb")
                     response=send_file(image,as_attachment=True, download_name='myfile.jpg')
                     return response
 
