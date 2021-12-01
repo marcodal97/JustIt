@@ -27,7 +27,6 @@ path_stats2 = os.path.dirname(__file__)+"\Script_R\stats2.R"
 path_stats3 = os.path.dirname(__file__)+"\Script_R\stats3.R"
 path_mediatemp = os.path.dirname(__file__)+"\Script_R\mediatemp.R"
 
-#api = Api(app)/
 
 def connectToDb():
     cnx = mysql.connector.connect(user = userDB, password = pswUserDB, host = hostDB)
