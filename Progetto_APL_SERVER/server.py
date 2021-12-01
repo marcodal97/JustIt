@@ -6,14 +6,13 @@ import json
 import mysql.connector
 from mysql.connector import errorcode
 from mysql.connector.connection import MySQLConnection
-
-import subprocess #Utile per le statistiche di R
+import subprocess
 import os.path
 
 app = Flask(__name__)
 
-DB_NAME = 'justIt'
-#DB_NAME = 'db'
+#DB_NAME = 'justIt'
+DB_NAME = 'db'
 userDB = 'root'
 pswUserDB = '123456'
 hostDB = '127.0.0.1'
@@ -26,6 +25,7 @@ path_stats1 = os.path.dirname(__file__)+"\Script_R\stats1.R"
 path_stats2 = os.path.dirname(__file__)+"\Script_R\stats2.R"
 path_stats3 = os.path.dirname(__file__)+"\Script_R\stats3.R"
 path_mediatemp = os.path.dirname(__file__)+"\Script_R\mediatemp.R"
+
 
 def connectToDb():
     cnx = mysql.connector.connect(user = userDB, password = pswUserDB, host = hostDB)
@@ -114,7 +114,7 @@ def logout():
             session.remove(username)
             return jsonify(createResult(False, "Success", 200))
            
-    else: return jsonify(True, "Error", 400); 
+    else: return jsonify(createResult(True, "Error", 400)); 
      
 
 @app.route('/insertRistorante', methods=["POST"])
