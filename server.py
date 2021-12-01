@@ -83,6 +83,42 @@ def createResult(isError, message, statusCode):
         })
     return jsonResult
 
+
+@app.route('/login',methods=["GET"])
+def login():
+
+    username = request.args.get('username')
+    password = request.args.get('password')
+
+    cnx = connectToDb()
+    cursor = cnx.cursor()
+    query = "select * from utente where username='{}' and pass='{}'".format(username,password)
+    try:
+        cursor.execute(query)
+        res = cursor.fetchall()
+    except mysql.connector.Error as err:       
+        return jsonify(createResult(True, err.msg, 400))
+    if not res:
+        return jsonify(createResult(False, "Errati", 200))
+    else:
+        if username in session:
+            return jsonify(createResult(False, "Già loggato", 200))
+        session.append(username)
+        for row in res:
+            return jsonify(createResult(False, str(row[2]), 200))
+ 
+
+@app.route('/logout', methods=["GET"])  
+def logout():
+    username = request.args.get('username')
+    if session:
+        if username in session:
+            session.remove(username)
+            return jsonify(createResult(False, "Success", 200))
+           
+    else: return jsonify(True, "Error", 400); 
+     
+
 @app.route('/insertRistorante', methods=["POST"])
 def inserisciRistorante():
     cnx = connectToDb()
@@ -120,7 +156,7 @@ def inserisciCliente():
                     statusCode= 200,
                     )
 
-@app.route('/verificaUsername', methods=["GET"]) #per la registrazione
+@app.route('/verificaUsername', methods=["GET"]) 
 def verificaUsername():
     username = request.args.get('username')
     cnx = connectToDb()
@@ -130,80 +166,11 @@ def verificaUsername():
         res = cursor.fetchall()
     except mysql.connector.Error:
         return jsonify(createResult(True, "Errore di connessione al database", 400))
-        #return jsonify(isError= True,
-         #           message= "Errore",
-          #          statusCode= 400,
-           #         )
     if not res:
         return jsonify(createResult(False, "Non Presente", 200))
-        #return jsonify(isError= False,  
-         #           message= "Non Presente",
-          #          statusCode= 200,
-           #         )
-    else: 
-        return jsonify(createResult(False, "Presente", 200))
-            #return jsonify(isError= False,
-             #       message= "Presente",
-              #      statusCode= 200,
-               #     )
-
-@app.route('/login',methods=["GET"])
-def login():
-
-    username = request.args.get('username')
-    password = request.args.get('password')
-
-    cnx = connectToDb()
-    cursor = cnx.cursor()
-    query = "select * from utente where username='{}' and pass='{}'".format(username,password)
-    try:
-        cursor.execute(query)
-        res = cursor.fetchall()
-    except mysql.connector.Error:       #Se c'è un errore di database isError = True altrimenti è False. 
-        #return jsonify(isError= True,   #Se i dati sono errati il messaggio che invia al client è "Errati". Altrimenti invia il tipo dell'utente che si è loggato
-        #            message= "Errore",
-        #           statusCode= 400,
-        #           )
-        return jsonify(createResult(True, "Errore", 400))
-    if not res:
-        return jsonify(createResult(False, "Errati", 200))
-        #return jsonify(isError= False,  
-         #           message= "Errati",
-          #          statusCode= 200,
-           #         )
     else:
-        if username in session:
-            return jsonify(createResult(False, "Già loggato", 200))
-            #return jsonify(isError= False,  
-             #       message= "Già loggato",
-              #      statusCode= 200,
-               #     )
-        session.append(username)
-        print(session)
-        for row in res:
-            return jsonify(createResult(False, str(row[2]), 200))
-            #return jsonify(isError= False,  
-              #          message= row[2],
-               #         statusCode= 200,
-                #        )
-
-@app.route('/logout', methods=["GET"])  
-def logout():
-    username = request.args.get('username')
-    if session:
-        if username in session:
-            session.remove(username)
-            return jsonify(createResult(False, "Success", 200))
-            #return jsonify(isError=False,
-             #               message= "Success",
-              #              statusCode=200,
-               #             )
-    else: return jsonify(True, "Error", 400); 
-        #return jsonify(isError= True,
-         #           message= "Errore",
-          #          statusCode= 400,
-           #         )
-    
+        return jsonify(createResult(False, "Presente", 200))
+   
 @app.route('/visualizzaRistoranti', methods=["GET"])
 def visualizzaRistoranti():
     jsonResult = selectAllRestaurant()
