@@ -12,8 +12,8 @@ import os.path
 
 app = Flask(__name__)
 
-DB_NAME = 'justIt'
-#DB_NAME = 'db'
+#DB_NAME = 'justIt'
+DB_NAME = 'db'
 userDB = 'root'
 pswUserDB = '123456'
 hostDB = '127.0.0.1'
@@ -26,6 +26,8 @@ path_stats1 = os.path.dirname(__file__)+"\Script_R\stats1.R"
 path_stats2 = os.path.dirname(__file__)+"\Script_R\stats2.R"
 path_stats3 = os.path.dirname(__file__)+"\Script_R\stats3.R"
 path_mediatemp = os.path.dirname(__file__)+"\Script_R\mediatemp.R"
+
+#api = Api(app)/
 
 def connectToDb():
     cnx = mysql.connector.connect(user = userDB, password = pswUserDB, host = hostDB)
@@ -559,6 +561,7 @@ def questionario():
                 case 'mediatemp': 
                     cmd = [command, path_mediatemp] + qualita + servizio + tempo
                     x = subprocess.check_output(cmd, universal_newlines=True)
+                    print(x)
                     image=open(".\mediatemp.jpg","rb")
                     response=send_file(image,as_attachment=True, download_name='myfile.jpg')
                     return response
