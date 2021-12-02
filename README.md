@@ -1,95 +1,33 @@
 # JustIt
 
-# Classi da utilizzare
+# Inizializzazione Database
 
-CLASSE UTENTE: (Username, Password)
+Il primo passaggio da effettuare riguarda l'installazione della libreria mySQL connector/python, una libreria che permette di far interagire il programma scritto in python con un database mySQL.
 
-CLASSE CLIENTE EREDITA DA UTENTE: (Nome, Cognome, Indirizzo)
+Questa può essere reperita al link: https://dev.mysql.com/downloads/connector/python/
 
-CLASSE RISTORANTE EREDITA DA UTENTE: (Nome_Ristorante, Categoria, Indirizzo_Ristorante, Aperto)
+Mediante mySQL Workbench, è necessario creare una nuova connessione avente i seguenti parametri:
+  - Hostname: 127.0.0.1;
+  - Port: 3306;
+  - Username: root;
+  - Connection Method: Standard(TCP/IP).
 
-CLASSE MENU: (ID (incr), Username_Ristorante, Categoria (Primi, secondi, contorni ...), Lista_Pietanze)
+Successivamente aprire ed avviare il file: CreateDatabase.sql, così da creare il database con tutte le classi necessarie per il corretto funzionamento.
 
-CLASSE PIETANZE: (ID, Nome, Descrizione, Categoria, Prezzo)
+# Inizializzazione Server
 
-CLASSE ORDINI: (ID, Lista_Pietanza, Costo_Totale)
+- Installare Python per Windows mediante il link: https://www.python.org/downloads/
+- Aprire una PowerShell nella directory: Progetto_APL_SERVER ed inserire i seguenti comandi:
+  - py -m venv venv
+  - venv\Scripts\activate, utile per avviare un ambiente venv
+  - pip install flask
+  - $env:FLASH_APP = "server.py"
+  - python -m flask run
 
+# Inizializzazione Client
 
-# Tabelle DB
+Al fine di poter utilizzare l'API Web, sarà necessario installare i pacchetti NuGet:
+- Microsoft.AspNet.WebApi.client
+- Newtonsoft.Json (Framework JSON)
 
-UTENTE: (Username, Password, Tipologia_Utente) //Flag: 0 (Cliente), 1 (Ristorante)
-
-CLIENTE: (Username, Nome, Cognome, Indirizzo)
-
-RISTORANTE: (Username, Nome_Ristorante, Categoria, Indirizzo_Ristorante, Aperto)
-
-MENU: (ID, Username_Ristorante, Categoria)
-
-MENU-PIETANZE: (ID_MENU, ID_PIETANZA) - AL MOMENTO NON SERVE
-
-PIETANZA (ID, ID_MENU, Nome, Descrizione, Categoria, Prezzo)
-
-ORDINI: (ID, Username_Ristorante, Username_Utente, stato) --  STATO: Conferma, Spedito, In Attesa
-
-ORDINI-PIETANZA: (ID, ID_PIETANZA)
-
-
-# Ipotetiche funzionalità da implementare
-
-  Login (FATTO), registrazione (FATTO)
-  logout (FATTO)
-  
-  1. Home clienti
-  
-    a.  Visualizzare ristoranti aperti/chiusi (FATTO)
-    
-    b.  Visualizzazione mediante ricerca dei ristoranti aperti/chiusi (?) -- NO
-    
-    c.  Visualizzazione menu del ristorante scelto (FATTO)
-    
-    d.  Scelta pietanze relative ai vari menu o scelta di soli menu fissi (?) forse conviene di più (FATTO)
-    
-    e.  Attendere notifica di avvenuta conferma -- THREAD (FATTO)
-   
-    f.  Attendere notifica di avvenuta consegna -- THREAD (FATTO)
-    
-    g. Compilazione questionario per il client (R) (FATTO)
-    
- 
- 2. Home Ristorante
- 
-      a. Bottone per apertura/chiusura ristorante (FATTO)
-
-      b. Inserire, cancellare e visualizzare menu (con relative pietanze) -- FORM (FATTO)  
-
-      c. Attendere arrivo ordini -- THREAD (FATTO)
-
-      d. Conferma dell'ordine -- BOTTONE (FATTO)
- 
-      f. Conferma della consegna -- BOTTONE (FATTO)
-      
-      g. Visualizzione valutazioni (Visualizza statistiche) (FATTO)
-    
-    
-**********************************************
-
-
-  3. Server
-
-    a.  Menu
-       a.1  Visualizzazione menu del ristorante scelto (FATTO)
-       a.2  Inserimento nuovo menu (FATTO)
-       a.3  Restituzione informazioni base menu (FATTO)
-       a.4  Rimozione menu (FATTO)
-    
-    b.  Pietanze           
-       b.1  Inserimento di pietanze in un menu (FATTO)
-       b.2  Restituzione pietanze di un menu (FATTO)
-       b.3  Rimozione di pietanze in un menu (FATTO)
-       
-    c.  Ordini
-       c.1  Inserimento ordine (FATTO)
-       c.2  Inserimento pietanze in un ordine (FATTO)
-       c.3  Restituzione informazioni base di un ordine (FATTO)
-       c.4  Restituzione pietanze di un ordine con dettagli (FATTO)
-       c.5  Aggiornamento e restituzione stato ordine (FATTO)
+Questo potrà essere effettuando digitando: Install‐Package Microsoft.AspNet.WebApi.Client nella console di gestione pacchetti (PMC) che si al seguente percorso: Strumenti -> Gestione pacchetti NuGet -> Console di Gestione Pacchetti.
