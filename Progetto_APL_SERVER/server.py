@@ -11,8 +11,8 @@ import os.path
 
 app = Flask(__name__)
 
-#DB_NAME = 'justIt'
-DB_NAME = 'db'
+DB_NAME = 'justIt'
+#DB_NAME = 'db'
 userDB = 'root'
 pswUserDB = '123456'
 hostDB = '127.0.0.1'
