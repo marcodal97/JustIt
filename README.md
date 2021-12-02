@@ -31,3 +31,7 @@ Al fine di poter utilizzare l'API Web, sarà necessario installare i pacchetti N
 - Newtonsoft.Json (Framework JSON)
 
 Questo potrà essere effettuando digitando: Install‐Package Microsoft.AspNet.WebApi.Client nella console di gestione pacchetti (PMC) che si al seguente percorso: Strumenti -> Gestione pacchetti NuGet -> Console di Gestione Pacchetti.
+
+Successivamente avviare il client da Visual Studio o dal file.exe presente nella cartella bin/Test/Progetto_APL_CLIENT.exe
+
+Per verificare l'interazione tra le due diverse tipologie di utenti, basterà avviare due volte l'eseguibile.
